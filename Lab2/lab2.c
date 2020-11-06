@@ -52,6 +52,13 @@ uint8_t dec_to_7seg[12] =  {
        0b11111111, // Clear 
 };
 
+
+
+
+
+
+
+
 //******************************************************************************
 //                            chk_buttons                                      
 //Checks the state of the button number passed to it. It shifts in ones till   
@@ -72,6 +79,8 @@ uint8_t chk_buttons(uint8_t button) {
 	return 0;  // return a 0 if the button was not pressed  
 } 
 //******************************************************************************
+
+
 
 //***********************************************************************************
 //                                   segment_sum                                    
@@ -106,6 +115,8 @@ void segsum(uint16_t sum) {
   //now move data to right place for misplaced colon position
 }//segment_sum
 //***********************************************************************************
+
+
 
 
 //***********************************************************************************

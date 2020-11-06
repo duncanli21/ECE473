@@ -17,6 +17,38 @@
 //
 // PORTD bit 2 goes to regclk
 
+//holds data to be sent to the segments. logic zero turns segment on
+uint8_t segment_data[5]; 
+
+
+//decimal to 7-segment LED display encodings, logic "0" turns on segment
+uint8_t dec_to_7seg[12] =  {
+       0b11000000, // 0
+       0b11111001, // 1
+       0b10100100, // 2
+       0b10110000, // 3
+       0b10011001, // 4
+       0b10010010, // 5
+       0b10000010, // 6 
+       0b11111000, // 7
+       0b10000000, // 8
+       0b10010000, // 9
+       0b01111111, // . 
+       0b11111111, // Clear 
+};
+
+// Function to configure timer counters 
+void initRegisters()
+{
+     //timer counter 0 setup, running off i/o clock
+     TIMSK |= (1<<TOIE0);             //enable interrupts
+     TCCR0 |= (1<<CS02) | (1<<CS00);  //normal mode, prescale by 128
+
+     // Configure SPI 
+     // clk low on idle, leading edge sample, Master mode
+     SPCR = (1<<SPE) | (1<<MSTR) | (0<<CPHA) | (0<<CPOL);
+
+}
 
 //******************************************************************************
 //                            chk_buttons
@@ -78,12 +110,18 @@ void segsum(uint16_t sum) {
 uint8_t main()
 {
 	DDRB |= 0xF0; // Set bits 4-7 on port B as outputs 
+        DDRB |= 0x07; // Set SPI Pins as outputs 
 	DDRA = 0xFF; // Set port A as all outputs 
 	DDRD = 0xFF; // Set Port D as all outputs 
 	DDRE |= 0xFF; // set all bits as an output on port E 
 
-	PORTE |= 
+	PORTE |= 0x40; // disable CLK_INH 
+        PORTE &= ~(0x80) // enable SH/LD_n 
+
+        sei();   // enable interrupts 
+        
+         
 
 
-}
 
+}// main 
